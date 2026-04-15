@@ -1,0 +1,245 @@
+.echo-container {
+  min-height: 100vh;
+  position: relative;
+  padding: 30px;
+}
+
+.hero-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+  opacity: 0.6;
+}
+
+.vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 30%, var(--echo-obsidian) 100%);
+  z-index: -1;
+}
+
+.echo-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  margin-bottom: 40px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--echo-text);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  font-family: var(--echo-scientific);
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+  color: var(--echo-blue);
+}
+
+.hub-btn {
+  border: 1px solid var(--echo-violet);
+  padding: 5px 15px;
+  background: rgba(138, 43, 226, 0.1);
+}
+
+.echo-main {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.echo-header {
+  margin-bottom: 40px;
+}
+
+.echo-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.status-tag {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  letter-spacing: 2px;
+}
+
+.echo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  border-bottom: 1px solid var(--echo-border);
+}
+
+.section-head h3 {
+  font-size: 0.85rem;
+}
+
+.timeline {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 20px;
+}
+
+.year {
+  font-weight: bold;
+  font-family: var(--echo-scientific);
+  min-width: 60px;
+  font-size: 0.9rem;
+}
+
+.event {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.molecule-wrap {
+  padding: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.molecule-img {
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px var(--echo-violet));
+  animation: float 6s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.synthesis-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.synth-row {
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.telemetry-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.telemetry-main-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.telemetry-main-stat .label {
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+
+.telemetry-main-stat .value {
+  font-size: 1.5rem;
+  font-family: var(--echo-scientific);
+}
+
+.wave-sim {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 50px;
+}
+
+.wave-bar {
+  flex-grow: 1;
+  background: var(--echo-blue);
+  opacity: 0.5;
+}
+
+.log-window {
+  height: 100px;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  font-size: 0.75rem;
+  border: 1px solid var(--echo-border);
+}
+
+.log-msg {
+  margin-bottom: 5px;
+  opacity: 0.7;
+}
+
+.echo-footer {
+  margin-top: 60px;
+}
+
+.footer-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--echo-violet), transparent);
+  margin-bottom: 20px;
+}
+
+.footer-wrap {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+
+.full-width {
+  width: calc(100% - 40px);
+  margin: 0 20px 20px;
+}
+
+@media (max-width: 768px) {
+  .echo-nav {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

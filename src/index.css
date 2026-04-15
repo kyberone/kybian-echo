@@ -1,0 +1,61 @@
+:root {
+  --echo-obsidian: #050505;
+  --echo-violet: #8a2be2;
+  --echo-blue: #00f2ff;
+  --echo-dark-purple: #1a0b2e;
+  --echo-text: #e0d0ff;
+  --echo-border: rgba(138, 43, 226, 0.4);
+  --font-scientific: 'Orbitron', 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--echo-obsidian);
+  color: var(--echo-text);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+h1, h2, h3, .scientific {
+  font-family: var(--echo-scientific);
+  letter-spacing: 1px;
+}
+
+.glass-panel {
+  background: rgba(26, 11, 46, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--echo-border);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.1);
+}
+
+.glow-text-blue {
+  color: var(--echo-blue);
+  text-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
+}
+
+.glow-text-violet {
+  color: var(--echo-violet);
+  text-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
+}
+
+.echo-button {
+  background: transparent;
+  border: 1px solid var(--echo-blue);
+  color: var(--echo-blue);
+  padding: 8px 20px;
+  cursor: pointer;
+  font-family: var(--echo-scientific);
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.echo-button:hover {
+  background: rgba(0, 242, 255, 0.1);
+  box-shadow: 0 0 15px var(--echo-blue);
+}
