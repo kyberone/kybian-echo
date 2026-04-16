@@ -1,73 +1,20 @@
-# React + TypeScript + Vite
+# KYBIAN ECHO [Research Node 07]
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+"Protecting the galaxy from the dangerous misuse of Kybian technology."
 
-Currently, two official plugins are available:
+Welcome to Research Node 07 of the Kybian Echo. This encrypted portal is dedicated to the preservation of Vanguard knowledge and the synthesis of a True Stable Isotope.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## [ MISSION OVERVIEW ]
+Formed by the defectors of the Vanguard Five, the Kybian Echo works in the shadows to collapse the Expanse and restore the stars. We are the silent check on Directorate hubris.
 
-## React Compiler
+## [ RESEARCH TOOLS ]
+- **Black Signal Archive:** Interactive timeline of the Fracture and the Purge, with decryption tools for classified secrets.
+- **Isotope Synthesis:** Experimental laboratory interface for testing Kybian-Alpha and Kybian-X stability.
+- **Deep Veil Telemetry:** Real-time monitoring of Fracture density and temporal slippage.
+- **Encrypted Logs:** Secure storage for Vanguard legacy data.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## [ SECURITY NOTICE ]
+This node is protected by holographic encryption. If the interface begins to glitch, re-authenticate immediately via the Hub Relay.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+*VANGUARD_FIVE_LEGACY // LOCATION: REDACTED*

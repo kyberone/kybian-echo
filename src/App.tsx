@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, Info, Activity, Database, Zap, Share2, CircleDot, Unlock, AlertCircle, RefreshCw, Cpu } from 'lucide-react';
+import { Eye, Info, Activity, Database, CircleDot, Unlock, AlertCircle, RefreshCw, Cpu } from 'lucide-react';
 import './App.css';
 
 const timeline = [
