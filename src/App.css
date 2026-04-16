@@ -402,10 +402,37 @@ body {
   margin-bottom: 20px;
 }
 
-.footer-wrap {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.7rem;
-  opacity: 0.5;
-  letter-spacing: 2px;
+/* Responsive */
+@media (max-width: 768px) {
+  .echo-nav {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .nav-links {
+    gap: 15px;
+    font-size: 0.7rem;
+  }
+
+  .echo-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .echo-header h1 {
+    font-size: 2rem;
+  }
+
+  .echo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-wrap {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
 }
+
