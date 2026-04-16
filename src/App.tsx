@@ -5,9 +5,9 @@ import './App.css';
 
 const timeline = [
   { year: "0 AF", event: "The Fracture: Spatial fabric torn. FTL relays severed.", secret: "Vanguard warnings ignored by Directorate High Command." },
-  { year: "4 AF", event: "Vanguard Defection: Scientists flee the Sovereign Mandate.", secret: "Took refinement cores 01 through 05." },
-  { year: "12 AF", event: "The Purge: Directorate launches Black Signal. Thousands lost.", secret: "Signal frequency: 14.4THz. Source: Sovereign Prime." },
-  { year: "15 AF", event: "Deep Veil Entry: First Echo-Diver engine successfully tested.", secret: "Pilot: Sola Vane. Time dilation: 4.2%." },
+  { year: "10 AF", event: "Vanguard Defection: Scientists flee the Sovereign Mandate.", secret: "Took refinement cores 01 through 05." },
+  { year: "30 AF", event: "The Purge: Directorate launches Black Signal. Thousands lost.", secret: "Signal frequency: 14.4THz. Source: Sovereign Prime." },
+  { year: "40 AF", event: "Deep Veil Entry: First Echo-Diver engine successfully tested.", secret: "Pilot: Sola Vane. Time dilation: 4.2%." },
 ];
 
 function App() {
