@@ -128,11 +128,69 @@ body {
   color: var(--echo-blue);
 }
 
-.hub-btn {
-  border: 1px solid var(--echo-blue);
-  padding: 5px 15px;
-  border-radius: 2px;
+.nav-game-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: color 0.3s;
 }
+
+.nav-game-btn:hover {
+  color: var(--echo-blue);
+}
+
+.access-prompt {
+  padding: 40px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.access-prompt p {
+  margin-bottom: 30px;
+  font-size: 0.85rem;
+  max-width: 300px;
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+/* Modal */
+.game-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.game-modal-content {
+  position: relative;
+  width: 95%;
+  max-width: 600px;
+}
+
+.modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.mb-20 { margin-bottom: 20px; }
 
 /* Main */
 .echo-main {

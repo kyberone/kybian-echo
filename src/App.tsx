@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, Info, Activity, Database, CircleDot, Unlock, AlertCircle, RefreshCw, Cpu, Zap } from 'lucide-react';
+import { Eye, Info, Activity, Database, CircleDot, Unlock, AlertCircle, RefreshCw, Cpu, Zap, Microscope } from 'lucide-react';
+import IsotopeSynth from './components/IsotopeSynth';
 import './App.css';
 
 const timeline = [
@@ -15,6 +16,7 @@ function App() {
   const [decryptedIndices, setDecryptedIndices] = useState<number[]>([]);
   const [synthStatus, setSynthStatus] = useState<'idle' | 'running' | 'success' | 'failure' | 'glitch'>('idle');
   const [glitchActive, setGlitchActive] = useState(false);
+  const [isGameOpen, setIsGameOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -62,7 +64,7 @@ function App() {
         </div>
         <div className="nav-links">
           <a href="#archives">ARCHIVES</a>
-          <a href="#synthesis">SYNTHESIS</a>
+          <button onClick={() => setIsGameOpen(true)} className="nav-game-btn">SYNTHESIS</button>
           <a href="#telemetry">TELEMETRY</a>
           <a href="https://kybian.com" className="hub-btn">HUB_RELAY</a>
         </div>
@@ -125,71 +127,16 @@ function App() {
           {/* Isotope Synthesis */}
           <section id="synthesis" className="synthesis-section glass-panel">
             <div className="section-head">
-              <Zap size={20} className="glow-text-violet" />
-              <h3 className="scientific">ISOTOPE_SYNTHESIS</h3>
+              <Microscope size={20} className="glow-text-violet" />
+              <h3 className="scientific">VANGUARD_SYNTHESIS_HUB</h3>
             </div>
-            <div className="molecule-wrap">
-              <img src="/images/echo-diagram.png" alt="Molecule" className="molecule-img" />
-              <AnimatePresence mode="wait">
-                {synthStatus === 'running' && (
-                  <motion.div 
-                    key="running"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    className="synth-overlay active"
-                  >
-                    <RefreshCw className="spin" size={32} />
-                    <span>SYNTHESIZING...</span>
-                  </motion.div>
-                )}
-                {synthStatus === 'success' && (
-                  <motion.div 
-                    key="success"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    className="synth-overlay success"
-                  >
-                    <CircleDot size={32} />
-                    <span>STABLE ISOTOPE ACHIEVED</span>
-                  </motion.div>
-                )}
-                {synthStatus === 'failure' && (
-                  <motion.div 
-                    key="failure"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    className="synth-overlay failure"
-                  >
-                    <AlertCircle size={32} />
-                    <span>SYNTHESIS FAILED</span>
-                  </motion.div>
-                )}
-                {synthStatus === 'glitch' && (
-                  <motion.div 
-                    key="glitch"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    className="synth-overlay glitch"
-                  >
-                    <Cpu size={32} />
-                    <span>@#$!%-ERROR-&^%$</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              <div className="synthesis-overlay static">
-                <div className="synth-row">
-                  <span>ALPHA_PURITY:</span>
-                  <span className="glow-text-blue">98.4%</span>
-                </div>
-                <div className="synth-row">
-                  <span>STABILITY_INDEX:</span>
-                  <span className="glow-text-violet">CRITICAL</span>
-                </div>
-              </div>
+            <div className="access-prompt">
+              <RefreshCw size={40} className="glow-text-violet mb-20 spin" />
+              <p>Remote access to refinement cores. Manual stabilization required for high-purity Kybian-Alpha samples.</p>
+              <button onClick={() => setIsGameOpen(true)} className="echo-button">
+                ESTABLISH_VANGUARD_LINK
+              </button>
             </div>
-            <button 
-              className="echo-button full-width" 
-              onClick={handleSynthesis}
-              disabled={synthStatus !== 'idle'}
-            >
-              INITIATE SYNTHESIS
-            </button>
           </section>
 
           {/* Telemetry Section */}
@@ -230,6 +177,29 @@ function App() {
           <span>LOCATION: REDACTED</span>
         </div>
       </footer>
+
+      <AnimatePresence>
+        {isGameOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="game-modal-overlay"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="game-modal-content"
+            >
+              <button className="modal-close glow-text-violet scientific" onClick={() => setIsGameOpen(false)}>
+                [ DISCONNECT_VANGUARD ]
+              </button>
+              <IsotopeSynth />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
