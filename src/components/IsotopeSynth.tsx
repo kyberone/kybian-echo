@@ -16,14 +16,13 @@ const IsotopeSynth: React.FC = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [timeRemaining, setTimeRemaining] = useState(60);
 
-  // Constants for spatial calculation
-  const HEX_WIDTH = 110;
-  const HEX_HEIGHT = 120;
+  // Precise geometric constants for pointy-topped hexagons
   const RADIUS = 60;
+  const HEX_WIDTH = 104; // sqrt(3) * RADIUS
+  const HEX_HEIGHT = 120; // 2 * RADIUS
 
   const generateLevel = useCallback(() => {
     const newNodes: Node[] = [];
-    // 3x3 Grid
     for (let i = 0; i < 9; i++) {
       const col = i % 3;
       const row = Math.floor(i / 3);
@@ -55,48 +54,47 @@ const IsotopeSynth: React.FC = () => {
     ));
   };
 
-  // Calculate the world-space position of a specific vertex
   const getVertexWorldPos = (node: Node, vertexIndex: number) => {
-    // Center of the hexagon in a staggered grid
-    // Column spacing is HEX_WIDTH, but staggered rows offset the middle column
+    // Center calculation matching CSS grid + transformation
     let cx = node.gridX * HEX_WIDTH;
-    let cy = node.gridY * (HEX_HEIGHT * 0.75 + 15); // Approximate vertical spacing
-    
-    // Middle column (gridX === 1) is staggered down
+    let cy = node.gridY * (HEX_HEIGHT + 0); // No gap in grid
+
     if (node.gridX === 1) {
-      cy += 60; // From CSS: transform: translateY(60px)
+      cy += 60; // middle column staggered down by half height
     }
 
-    // Angle of the vertex considering rotation
-    // Pointy-topped: index 0 is at -90deg (top)
+    // Pointy-topped vertices starting from top (index 0)
     const angleDeg = (vertexIndex * 60) + node.rotation - 90;
     const angleRad = (Math.PI / 180) * angleDeg;
 
     return {
-      x: Math.round(cx + RADIUS * Math.cos(angleRad)),
-      y: Math.round(cy + RADIUS * Math.sin(angleRad)),
+      x: cx + RADIUS * Math.cos(angleRad),
+      y: cy + RADIUS * Math.sin(angleRad),
     };
   };
 
-  // Find all vertex-to-vertex connections
   const connections = useMemo(() => {
-    const active: { nodeId: number; portIndex: number; key: string }[] = [];
-    const worldMap: Record<string, { nodeId: number; portIndex: number }[]> = {};
+    const active: { nodeId: number; portIndex: number }[] = [];
+    const TOLERANCE = 2;
 
     nodes.forEach(node => {
       node.ports.forEach(p => {
         const pos = getVertexWorldPos(node, p);
-        const key = `${pos.x},${pos.y}`;
-        if (!worldMap[key]) worldMap[key] = [];
-        worldMap[key].push({ nodeId: node.id, portIndex: p });
-      });
-    });
+        
+        // Look for any other port at this position
+        const isLinked = nodes.some(otherNode => {
+          if (otherNode.id === node.id) return false;
+          return otherNode.ports.some(otherP => {
+            const otherPos = getVertexWorldPos(otherNode, otherP);
+            const dist = Math.sqrt(Math.pow(pos.x - otherPos.x, 2) + Math.pow(pos.y - otherPos.y, 2));
+            return dist < TOLERANCE;
+          });
+        });
 
-    // A connection exists if 2 or more ports occupy the same world-space key
-    Object.entries(worldMap).forEach(([key, occupants]) => {
-      if (occupants.length >= 2) {
-        occupants.forEach(occ => active.push({ ...occ, key }));
-      }
+        if (isLinked) {
+          active.push({ nodeId: node.id, portIndex: p });
+        }
+      });
     });
 
     return active;
@@ -104,9 +102,8 @@ const IsotopeSynth: React.FC = () => {
 
   const stability = useMemo(() => {
     if (nodes.length === 0) return 0;
-    // Goal: 10 connections for 100% stability
-    // divide by 2 because each connection has 2 ports
-    return Math.min(100, (connections.length / 20) * 100);
+    // TARGET: 8 successful connections (16 linked ports)
+    return Math.min(100, (connections.length / 16) * 100);
   }, [connections, nodes]);
 
   useEffect(() => {
@@ -136,7 +133,7 @@ const IsotopeSynth: React.FC = () => {
       <div className="synth-header">
         <div className="header-top">
           <Cpu size={16} className="glow-text-violet" />
-          <span className="scientific">VANGUARD_SYNTH_v1.2</span>
+          <span className="scientific">VANGUARD_SYNTH_v1.3</span>
         </div>
         <div className="synth-stats">
           <div className="stat-group">
@@ -165,10 +162,10 @@ const IsotopeSynth: React.FC = () => {
               <h3 className="scientific">ISOTOPE_SYNTH</h3>
               <div className="synth-manual glass-panel">
                 <h4>SYNTHESIS_PROTOCOL:</h4>
-                <p>Rotate nodes to align ports at shared vertices. Connected ports will glow white.</p>
+                <p>Align the corner-ports of adjacent isotopes to stabilize the network.</p>
                 <ul>
                   <li>• CLICK TO ROTATE NODES</li>
-                  <li>• ALIGN CORNER DOTS TO CONNECT</li>
+                  <li>• CORNER DOTS MUST OVERLAP TO CONNECT</li>
                   <li>• REACH 100% STABILITY TO LOCK SEQUENCE</li>
                 </ul>
               </div>
@@ -228,7 +225,7 @@ const IsotopeSynth: React.FC = () => {
 
       <div className="synth-footer">
         <Info size={14} className="glow-text-blue" />
-        <span className="scientific">LINK_COUNT: {connections.length / 2} // STABILITY: {stability.toFixed(0)}%</span>
+        <span className="scientific">ACTIVE_LINKS: {connections.length / 2} // TARGET: 8</span>
       </div>
     </div>
   );

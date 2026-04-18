@@ -47,7 +47,7 @@
 }
 
 .synth-grid-viewport {
-  height: 450px;
+  height: 480px;
   position: relative;
   display: flex;
   align-items: center;
@@ -119,18 +119,19 @@
 
 .hex-grid {
   display: grid;
-  grid-template-columns: repeat(3, 110px);
-  gap: 15px 0px; /* Reduced gap for vertex touching */
+  grid-template-columns: repeat(3, 104px);
+  gap: 0px 0px; 
   padding: 20px;
 }
 
 /* Proper Pointy-Topped Hex Staggering */
+/* Middle column (2nd, 5th, 8th) staggered down */
 .hex-node:nth-child(3n+2) {
-  transform: translateY(67px) translateX(0px); /* 120 * 0.75 + vertical gap */
+  transform: translateY(60px);
 }
 
 .hex-node {
-  width: 110px;
+  width: 104px;
   height: 120px;
   cursor: pointer;
   position: relative;
@@ -152,7 +153,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg width='110' height='120' viewBox='0 0 110 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M55 2L108 30V90L55 118L2 90V30L55 2Z' fill='rgba(0, 210, 255, 0.05)' stroke='rgba(0, 210, 255, 0.3)' stroke-width='2'/%3E%3C/svg%3E");
+  /* Pointy-topped hex: Width 104, Height 120, Radius 60 */
+  background-image: url("data:image/svg+xml,%3Csvg width='104' height='120' viewBox='0 0 104 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M52 0L104 30V90L52 120L0 90V30L52 0Z' fill='rgba(0, 210, 255, 0.05)' stroke='rgba(0, 210, 255, 0.3)' stroke-width='2'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-size: contain;
   transition: all 0.3s;
@@ -160,7 +162,7 @@
 
 .hex-node:hover .hex-shape {
   filter: drop-shadow(0 0 10px var(--echo-blue)) brightness(1.5);
-  background-image: url("data:image/svg+xml,%3Csvg width='110' height='120' viewBox='0 0 110 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M55 2L108 30V90L55 118L2 90V30L55 2Z' fill='rgba(0, 210, 255, 0.1)' stroke='%2300d2ff' stroke-width='2'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='104' height='120' viewBox='0 0 104 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M52 0L104 30V90L52 120L0 90V30L52 0Z' fill='rgba(0, 210, 255, 0.1)' stroke='%2300d2ff' stroke-width='2'/%3E%3C/svg%3E");
 }
 
 .hex-center {
@@ -169,8 +171,8 @@
 
 .hex-port {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background: var(--echo-violet);
   border-radius: 50%;
   z-index: 3;
@@ -178,19 +180,19 @@
   box-shadow: 0 0 5px var(--echo-violet);
 }
 
-/* Ports exactly on vertices */
-.port-0 { top: 2px; left: 55px; transform: translate(-50%, -50%); }
-.port-1 { top: 30px; right: 2px; transform: translate(50%, -50%); }
-.port-2 { bottom: 30px; right: 2px; transform: translate(50%, 50%); }
-.port-3 { bottom: 2px; left: 55px; transform: translate(-50%, 50%); }
-.port-4 { bottom: 30px; left: 2px; transform: translate(-50%, -50%); }
-.port-5 { top: 30px; left: 2px; transform: translate(-50%, -50%); }
+/* Ports exactly on vertices (0nd index is Top) */
+.port-0 { top: 0; left: 52px; transform: translate(-50%, -50%); }
+.port-1 { top: 30px; right: 0; transform: translate(50%, -50%); }
+.port-2 { bottom: 30px; right: 0; transform: translate(50%, 50%); }
+.port-3 { bottom: 0; left: 52px; transform: translate(-50%, 50%); }
+.port-4 { bottom: 30px; left: 0; transform: translate(-50%, 50%); }
+.port-5 { top: 30px; left: 0; transform: translate(-50%, -50%); }
 
 .hex-port.connected {
   background: #fff;
   box-shadow: 0 0 15px #fff, 0 0 30px var(--echo-blue);
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   z-index: 4;
 }
 
