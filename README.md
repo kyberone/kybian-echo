@@ -12,6 +12,7 @@ Formed by the defectors of the Vanguard Five, the Kybian Echo works in the shado
 - **Isotope Synthesis:** Experimental laboratory interface for testing Kybian-Alpha and Kybian-X stability.
 - **Deep Veil Telemetry:** Real-time monitoring of Fracture density and temporal slippage.
 - **Encrypted Logs:** Secure storage for Vanguard legacy data.
+- **Isotope Synth:** Spatial logic puzzle. Rotate jagged isotope nodes to align vertices and achieve molecular stability. (Accessible via Vanguard Link)
 
 ## [ SECURITY NOTICE ]
 This node is protected by holographic encryption. If the interface begins to glitch, re-authenticate immediately via the Hub Relay.
