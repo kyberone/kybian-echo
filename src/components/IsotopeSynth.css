@@ -47,7 +47,7 @@
 }
 
 .synth-grid-viewport {
-  height: 450px;
+  height: 480px;
   position: relative;
   display: flex;
   align-items: center;
@@ -70,6 +70,16 @@
   text-align: center;
   padding: 40px;
   box-sizing: border-box;
+}
+
+.synth-overlay.fatal {
+  background: rgba(40, 10, 0, 0.95);
+  border: 1px solid var(--echo-violet);
+}
+
+.synth-overlay.success {
+  background: rgba(0, 40, 20, 0.95);
+  border: 2px solid #4caf50;
 }
 
 .synth-manual {
@@ -105,29 +115,26 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+  padding: 40px;
 }
 
 .hex-grid {
   display: grid;
-  grid-template-columns: repeat(3, 100px);
-  gap: 15px 5px; /* Adjust gap for hex alignment */
-  padding: 20px;
+  grid-template-columns: repeat(3, 110px);
+  gap: 10px 0px;
 }
 
-/* Staggering rows for hex-like alignment */
+/* Stagger every second column for pointy-topped hexagons */
 .hex-node:nth-child(3n+2) {
-  transform: translateY(25px);
+  transform: translateY(60px);
 }
 
-.hex-port.connected {
-  background: #fff;
-  box-shadow: 0 0 15px #fff, 0 0 30px var(--echo-blue);
-  transform: translate(-50%, -50%) scale(1.3);
-}
-
-.synth-overlay.success {
-  background: rgba(0, 40, 20, 0.95);
-  border: 2px solid #4caf50;
+.hex-node {
+  width: 110px;
+  height: 120px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 .hex-inner {
@@ -145,16 +152,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 210, 255, 0.05);
-  border: 2px solid rgba(0, 210, 255, 0.3);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background-image: url("data:image/svg+xml,%3Csvg width='110' height='120' viewBox='0 0 110 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M55 2L108 30V90L55 118L2 90V30L55 2Z' fill='rgba(0, 210, 255, 0.05)' stroke='rgba(0, 210, 255, 0.3)' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
   transition: all 0.3s;
 }
 
 .hex-node:hover .hex-shape {
-  background: rgba(0, 210, 255, 0.1);
-  border-color: var(--echo-blue);
-  filter: brightness(1.2);
+  filter: drop-shadow(0 0 10px var(--echo-blue)) brightness(1.5);
+  background-image: url("data:image/svg+xml,%3Csvg width='110' height='120' viewBox='0 0 110 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M55 2L108 30V90L55 118L2 90V30L55 2Z' fill='rgba(0, 210, 255, 0.1)' stroke='%2300d2ff' stroke-width='2'/%3E%3C/svg%3E");
 }
 
 .hex-center {
@@ -163,20 +169,29 @@
 
 .hex-port {
   position: absolute;
-  width: 15px;
-  height: 15px;
-  background: var(--echo-blue);
-  box-shadow: 0 0 10px var(--echo-blue);
+  width: 12px;
+  height: 12px;
+  background: var(--echo-violet);
   border-radius: 50%;
+  z-index: 3;
+  transition: all 0.3s;
 }
 
-/* Position ports around the hexagon */
-.port-0 { top: 0; left: 50%; transform: translate(-50%, -50%); }
-.port-1 { top: 25%; right: 0; transform: translate(50%, -50%); }
-.port-2 { bottom: 25%; right: 0; transform: translate(50%, 50%); }
-.port-3 { bottom: 0; left: 50%; transform: translate(-50%, 50%); }
-.port-4 { bottom: 25%; left: 0; transform: translate(-50%, 50%); }
-.port-5 { top: 25%; left: 0; transform: translate(-50%, -50%); }
+/* Position ports exactly on the points of the SVG hexagon */
+.port-0 { top: 2px; left: 55px; transform: translate(-50%, -50%); }
+.port-1 { top: 30px; right: 2px; transform: translate(50%, -50%); }
+.port-2 { bottom: 30px; right: 2px; transform: translate(50%, 50%); }
+.port-3 { bottom: 2px; left: 55px; transform: translate(-50%, -50%); }
+.port-4 { bottom: 30px; left: 2px; transform: translate(-50%, -50%); }
+.port-5 { top: 30px; left: 2px; transform: translate(-50%, -50%); }
+
+.hex-port.connected {
+  background: #fff;
+  box-shadow: 0 0 15px #fff, 0 0 30px var(--echo-blue);
+  width: 16px;
+  height: 16px;
+  z-index: 4;
+}
 
 .synth-footer {
   padding: 15px;
