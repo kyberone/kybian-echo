@@ -1,5 +1,5 @@
 .synth-game-container {
-  width: 500px;
+  width: 550px;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
@@ -47,7 +47,7 @@
 }
 
 .synth-grid-viewport {
-  height: 480px;
+  height: 450px;
   position: relative;
   display: flex;
   align-items: center;
@@ -115,18 +115,18 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  padding: 40px;
 }
 
 .hex-grid {
   display: grid;
   grid-template-columns: repeat(3, 110px);
-  gap: 10px 0px;
+  gap: 15px 0px; /* Reduced gap for vertex touching */
+  padding: 20px;
 }
 
-/* Stagger every second column for pointy-topped hexagons */
+/* Proper Pointy-Topped Hex Staggering */
 .hex-node:nth-child(3n+2) {
-  transform: translateY(60px);
+  transform: translateY(67px) translateX(0px); /* 120 * 0.75 + vertical gap */
 }
 
 .hex-node {
@@ -169,27 +169,28 @@
 
 .hex-port {
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: var(--echo-violet);
   border-radius: 50%;
   z-index: 3;
   transition: all 0.3s;
+  box-shadow: 0 0 5px var(--echo-violet);
 }
 
-/* Position ports exactly on the points of the SVG hexagon */
+/* Ports exactly on vertices */
 .port-0 { top: 2px; left: 55px; transform: translate(-50%, -50%); }
 .port-1 { top: 30px; right: 2px; transform: translate(50%, -50%); }
 .port-2 { bottom: 30px; right: 2px; transform: translate(50%, 50%); }
-.port-3 { bottom: 2px; left: 55px; transform: translate(-50%, -50%); }
+.port-3 { bottom: 2px; left: 55px; transform: translate(-50%, 50%); }
 .port-4 { bottom: 30px; left: 2px; transform: translate(-50%, -50%); }
 .port-5 { top: 30px; left: 2px; transform: translate(-50%, -50%); }
 
 .hex-port.connected {
   background: #fff;
   box-shadow: 0 0 15px #fff, 0 0 30px var(--echo-blue);
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   z-index: 4;
 }
 

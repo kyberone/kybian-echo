@@ -6,7 +6,7 @@ import './IsotopeSynth.css';
 interface Node {
   id: number;
   rotation: number; // 0, 60, 120, 180, 240, 300
-  ports: number[]; // indices 0-5
+  ports: number[]; // indices 0-5 (corners)
 }
 
 const IsotopeSynth: React.FC = () => {
@@ -14,28 +14,27 @@ const IsotopeSynth: React.FC = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [timeRemaining, setTimeRemaining] = useState(60);
 
-  const GRID_SIZE = 3; // 3x3
-
-  // Define neighbors for each node index (0-8)
-  // Directions: 0:N, 1:NE, 2:SE, 3:S, 4:SW, 5:NW
-  // This is a simplified "flat-topped" hex neighbor map for a 3x3 grid
-  const neighborsMap: Record<number, { index: number; dir: number; opp: number }[]> = {
-    0: [{ index: 1, dir: 1, opp: 4 }, { index: 3, dir: 3, opp: 0 }],
-    1: [{ index: 0, dir: 4, opp: 1 }, { index: 2, dir: 1, opp: 4 }, { index: 4, dir: 3, opp: 0 }],
-    2: [{ index: 1, dir: 4, opp: 1 }, { index: 5, dir: 3, opp: 0 }],
-    3: [{ index: 0, dir: 0, opp: 3 }, { index: 4, dir: 1, opp: 4 }, { index: 6, dir: 3, opp: 0 }],
-    4: [{ index: 1, dir: 0, opp: 3 }, { index: 3, dir: 4, opp: 1 }, { index: 5, dir: 1, opp: 4 }, { index: 7, dir: 3, opp: 0 }],
-    5: [{ index: 2, dir: 0, opp: 3 }, { index: 4, dir: 4, opp: 1 }, { index: 8, dir: 3, opp: 0 }],
-    6: [{ index: 3, dir: 0, opp: 3 }, { index: 7, dir: 1, opp: 4 }],
-    7: [{ index: 4, dir: 0, opp: 3 }, { index: 6, dir: 4, opp: 1 }, { index: 8, dir: 1, opp: 4 }],
-    8: [{ index: 5, dir: 0, opp: 3 }, { index: 7, dir: 4, opp: 1 }],
+  // Neighbor map for a 3x3 staggered hex grid (pointy-topped)
+  // Grid layout:
+  // 0   1   2
+  //   3   4   5
+  // 6   7   8
+  const neighborsMap: Record<number, { index: number; sharedCorners: { local: number; target: number }[] }[]> = {
+    0: [{ index: 1, sharedCorners: [{ local: 1, target: 5 }] }, { index: 3, sharedCorners: [{ local: 2, target: 0 }, { local: 3, target: 5 }] }],
+    1: [{ index: 0, sharedCorners: [{ local: 5, target: 1 }] }, { index: 2, sharedCorners: [{ local: 1, target: 5 }] }, { index: 3, sharedCorners: [{ local: 4, target: 0 }] }, { index: 4, sharedCorners: [{ local: 2, target: 0 }, { local: 3, target: 5 }] }],
+    2: [{ index: 1, sharedCorners: [{ local: 5, target: 1 }] }, { index: 4, sharedCorners: [{ local: 4, target: 0 }] }, { index: 5, sharedCorners: [{ local: 2, target: 0 }, { local: 3, target: 5 }] }],
+    3: [{ index: 0, sharedCorners: [{ local: 0, target: 2 }, { local: 5, target: 3 }] }, { index: 1, sharedCorners: [{ local: 0, target: 4 }] }, { index: 4, sharedCorners: [{ local: 1, target: 5 }] }, { index: 6, sharedCorners: [{ local: 3, target: 1 }] }, { index: 7, sharedCorners: [{ local: 2, target: 0 }, { local: 3, target: 5 }] }],
+    4: [{ index: 1, sharedCorners: [{ local: 0, target: 2 }, { local: 5, target: 3 }] }, { index: 2, sharedCorners: [{ local: 0, target: 4 }] }, { index: 3, sharedCorners: [{ local: 5, target: 1 }] }, { index: 5, sharedCorners: [{ local: 1, target: 5 }] }, { index: 7, sharedCorners: [{ local: 3, target: 1 }] }, { index: 8, sharedCorners: [{ local: 2, target: 0 }, { local: 3, target: 5 }] }],
+    5: [{ index: 2, sharedCorners: [{ local: 0, target: 2 }, { local: 5, target: 3 }] }, { index: 4, sharedCorners: [{ local: 5, target: 1 }] }, { index: 8, sharedCorners: [{ local: 3, target: 1 }] }],
+    6: [{ index: 3, sharedCorners: [{ local: 1, target: 3 }] }, { index: 7, sharedCorners: [{ local: 1, target: 5 }] }],
+    7: [{ index: 3, sharedCorners: [{ local: 0, target: 2 }, { local: 5, target: 3 }] }, { index: 4, sharedCorners: [{ local: 1, target: 3 }] }, { index: 6, sharedCorners: [{ local: 5, target: 1 }] }, { index: 8, sharedCorners: [{ local: 1, target: 5 }] }],
+    8: [{ index: 4, sharedCorners: [{ local: 0, target: 2 }, { local: 5, target: 3 }] }, { index: 5, sharedCorners: [{ local: 1, target: 3 }] }, { index: 7, sharedCorners: [{ local: 5, target: 1 }] }],
   };
 
   const generateLevel = useCallback(() => {
     const newNodes: Node[] = [];
     for (let i = 0; i < 9; i++) {
-      // Give each node 2-3 random ports
-      const pCount = i === 4 ? 4 : 2; // Center node has more ports
+      const pCount = 3; 
       const ports: number[] = [];
       while (ports.length < pCount) {
         const p = Math.floor(Math.random() * 6);
@@ -59,27 +58,31 @@ const IsotopeSynth: React.FC = () => {
     ));
   };
 
-  // Calculate active connections
+  // Helper to get active global port indices for a node
+  const getGlobalPorts = (node: Node) => {
+    const offset = node.rotation / 60;
+    return node.ports.map(p => (p + offset) % 6);
+  };
+
+  // Calculate active connections (where two ports meet at a shared corner)
   const activeConnections = useMemo(() => {
-    const connections: string[] = []; // Store as "id1-id2"
+    const connections: { nodeA: number; nodeB: number; corner: number }[] = [];
+    
     nodes.forEach(node => {
+      const globalPorts = getGlobalPorts(node);
       const neighbors = neighborsMap[node.id];
       if (!neighbors) return;
 
       neighbors.forEach(neighbor => {
+        if (neighbor.index < node.id) return; // Prevent double counting
         const targetNode = nodes[neighbor.index];
-        if (!targetNode) return;
+        const targetGlobalPorts = getGlobalPorts(targetNode);
 
-        // Check if current node has a port facing the neighbor
-        // Local port = (neighbor.dir - (node.rotation / 60) + 6) % 6
-        const localPort = (neighbor.dir - (node.rotation / 60) + 6) % 6;
-        // Check if target node has a port facing back
-        const targetLocalPort = (neighbor.opp - (targetNode.rotation / 60) + 6) % 6;
-
-        if (node.ports.includes(localPort) && targetNode.ports.includes(targetLocalPort)) {
-          const pair = [node.id, targetNode.id].sort().join('-');
-          if (!connections.includes(pair)) connections.push(pair);
-        }
+        neighbor.sharedCorners.forEach(shared => {
+          if (globalPorts.includes(shared.local) && targetGlobalPorts.includes(shared.target)) {
+            connections.push({ nodeA: node.id, nodeB: neighbor.index, corner: shared.local });
+          }
+        });
       });
     });
     return connections;
@@ -87,8 +90,8 @@ const IsotopeSynth: React.FC = () => {
 
   const stability = useMemo(() => {
     if (nodes.length === 0) return 0;
-    // Target is to have at least 8 connections in a 3x3 grid
-    return Math.min(100, (activeConnections.length / 8) * 100);
+    // Goal: 10 connections for 100% stability
+    return Math.min(100, (activeConnections.length / 10) * 100);
   }, [activeConnections, nodes]);
 
   useEffect(() => {
@@ -118,7 +121,7 @@ const IsotopeSynth: React.FC = () => {
       <div className="synth-header">
         <div className="header-top">
           <Cpu size={16} className="glow-text-violet" />
-          <span className="scientific">VANGUARD_SYNTH_v1.0</span>
+          <span className="scientific">VANGUARD_SYNTH_v1.1</span>
         </div>
         <div className="synth-stats">
           <div className="stat-group">
@@ -147,11 +150,11 @@ const IsotopeSynth: React.FC = () => {
               <h3 className="scientific">ISOTOPE_SYNTH</h3>
               <div className="synth-manual glass-panel">
                 <h4>SYNTHESIS_PROTOCOL:</h4>
-                <p>Connect the jagged isotopes to form a stable molecular network.</p>
+                <p>Rotate nodes to align ports at shared vertices. Connected ports will glow white.</p>
                 <ul>
                   <li>• CLICK TO ROTATE NODES</li>
-                  <li>• ALIGN PORTS TO FORM [ ENERGY_BEAMS ]</li>
-                  <li>• CONNECT ALL NODES TO REACH 100% STABILITY</li>
+                  <li>• ALIGN CORNER DOTS TO CONNECT</li>
+                  <li>• REACH 100% STABILITY TO LOCK SEQUENCE</li>
                 </ul>
               </div>
               <button onClick={generateLevel} className="echo-button">INITIATE_RESEARCH</button>
@@ -179,37 +182,38 @@ const IsotopeSynth: React.FC = () => {
           {gameState === 'PLAYING' && (
             <div className="hex-grid-container">
               <div className="hex-grid">
-                {nodes.map(node => (
-                  <motion.div
-                    key={node.id}
-                    className="hex-node"
-                    onClick={() => rotateNode(node.id)}
-                    animate={{ rotate: node.rotation }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <div className="hex-inner">
-                      <div className="hex-shape" />
-                      <div className="hex-center">
-                        <Zap size={20} className={stability > 50 ? 'glow-text-blue' : 'glow-text-violet'} />
-                      </div>
-                      {node.ports.map(p => {
-                        // Determine if this port is part of an active connection
-                        const isConnected = neighborsMap[node.id]?.some(neighbor => {
-                           const targetNode = nodes[neighbor.index];
-                           const localDir = (neighbor.dir - (node.rotation/60) + 6) % 6;
-                           if (localDir !== p) return false;
-                           const targetLocalDir = (neighbor.opp - (targetNode.rotation/60) + 6) % 6;
-                           return targetNode.ports.includes(targetLocalDir);
-                        });
+                {nodes.map(node => {
+                  const globalPorts = getGlobalPorts(node);
+                  return (
+                    <motion.div
+                      key={node.id}
+                      className="hex-node"
+                      onClick={() => rotateNode(node.id)}
+                      animate={{ rotate: node.rotation }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <div className="hex-inner">
+                        <div className="hex-shape" />
+                        <div className="hex-center">
+                          <Zap size={20} className={stability > 50 ? 'glow-text-blue' : 'glow-text-violet'} />
+                        </div>
+                        {node.ports.map(p => {
+                          const globalP = (p + (node.rotation/60)) % 6;
+                          // Check if this specific corner is connected to ANY neighbor
+                          const isConnected = activeConnections.some(c => 
+                            (c.nodeA === node.id && c.corner === globalP) || 
+                            (c.nodeB === node.id && (neighborsMap[c.nodeA]?.find(n => n.index === node.id)?.sharedCorners.find(s => s.target === globalP)))
+                          );
 
-                        return (
-                          <div key={p} className={`hex-port port-${p} ${isConnected ? 'connected' : ''}`} />
-                        );
-                      })}
-                    </div>
-                  </motion.div>
-                ))}
+                          return (
+                            <div key={p} className={`hex-port port-${p} ${isConnected ? 'connected' : ''}`} />
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           )}
