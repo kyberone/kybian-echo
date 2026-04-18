@@ -99,18 +99,35 @@
 }
 
 /* Hex Grid */
+.hex-grid-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .hex-grid {
   display: grid;
   grid-template-columns: repeat(3, 100px);
-  gap: 15px;
+  gap: 15px 5px; /* Adjust gap for hex alignment */
   padding: 20px;
 }
 
-.hex-node {
-  width: 100px;
-  height: 110px;
-  cursor: pointer;
-  position: relative;
+/* Staggering rows for hex-like alignment */
+.hex-node:nth-child(3n+2) {
+  transform: translateY(25px);
+}
+
+.hex-port.connected {
+  background: #fff;
+  box-shadow: 0 0 15px #fff, 0 0 30px var(--echo-blue);
+  transform: translate(-50%, -50%) scale(1.3);
+}
+
+.synth-overlay.success {
+  background: rgba(0, 40, 20, 0.95);
+  border: 2px solid #4caf50;
 }
 
 .hex-inner {
