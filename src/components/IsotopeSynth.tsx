@@ -189,6 +189,7 @@ const IsotopeSynth: React.FC = () => {
                     whileTap={{ scale: 0.95 }}
                   >
                     <div className="hex-inner">
+                      <div className="hex-shape" />
                       <div className="hex-center">
                         <Zap size={20} className={stability > 50 ? 'glow-text-blue' : 'glow-text-violet'} />
                       </div>
