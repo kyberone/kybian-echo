@@ -124,21 +124,6 @@ function App() {
             </div>
           </section>
 
-          {/* Isotope Synthesis */}
-          <section id="synthesis" className="synthesis-section glass-panel">
-            <div className="section-head">
-              <Microscope size={20} className="glow-text-violet" />
-              <h3 className="scientific">VANGUARD_SYNTHESIS_HUB</h3>
-            </div>
-            <div className="access-prompt">
-              <RefreshCw size={40} className="glow-text-violet mb-20 spin" />
-              <p>Remote access to refinement cores. Manual stabilization required for high-purity Kybian-Alpha samples.</p>
-              <button onClick={() => setIsGameOpen(true)} className="echo-button">
-                ESTABLISH_VANGUARD_LINK
-              </button>
-            </div>
-          </section>
-
           {/* Telemetry Section */}
           <section id="telemetry" className="telemetry-section glass-panel">
             <div className="section-head">
@@ -165,6 +150,21 @@ function App() {
                 <div className="log-msg"><span className="log-time">[02:51]</span> Temporal slippage: +0.004s</div>
                 <div className="log-msg"><span className="log-time">[03:12]</span> Particle flux normalization initiated</div>
               </div>
+            </div>
+          </section>
+
+          {/* Isotope Synthesis */}
+          <section id="synthesis" className="synthesis-section glass-panel">
+            <div className="section-head">
+              <Microscope size={20} className="glow-text-violet" />
+              <h3 className="scientific">VANGUARD_SYNTHESIS_HUB</h3>
+            </div>
+            <div className="access-prompt">
+              <RefreshCw size={40} className="glow-text-violet mb-20 spin" />
+              <p>Remote access to refinement cores. Manual stabilization required for high-purity Kybian-Alpha samples.</p>
+              <button onClick={() => setIsGameOpen(true)} className="echo-button">
+                ESTABLISH_VANGUARD_LINK
+              </button>
             </div>
           </section>
         </div>
